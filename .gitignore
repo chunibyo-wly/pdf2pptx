@@ -2,3 +2,6 @@
 *.pptx
 venv
 .idea
+
+!43.pptx
+!169.pptx

@@ -19,7 +19,12 @@ def jpeg2pptx(images, output_path):
     from pptx import Presentation
     from pptx.util import Inches
 
-    presentation = Presentation()
+    ratio = images[0].width / images[0].height
+    presentation = None
+    if 1.3 <= ratio <= 1.4:
+        presentation = Presentation("43.pptx")
+    elif 1.7 <= ratio <= 1.8:
+        presentation = Presentation("169.pptx")
 
     left = top = Inches(0)
     for image in images:
@@ -37,7 +42,8 @@ def jpeg2pptx(images, output_path):
 def main():
     import sys
     images = pdf2jpeg(sys.argv[1])
-    jpeg2pptx(images, sys.argv[2])
+    if len(images) > 0:
+        jpeg2pptx(images, sys.argv[2])
 
 
 if __name__ == '__main__':
