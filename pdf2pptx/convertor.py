@@ -1,6 +1,13 @@
 import sys
 import PIL
-import io
+import io, os
+
+
+def _get_pptx_path(pptx_name):
+    """
+    Return the path to the built-in default .pptx package.
+    """
+    return os.path.join(os.path.split(__file__)[0], pptx_name)
 
 
 def pdf2jpeg(pdf_path):
@@ -22,9 +29,11 @@ def jpeg2pptx(images, output_path):
     ratio = images[0].width / images[0].height
     presentation = None
     if 1.3 <= ratio <= 1.4:
-        presentation = Presentation("43.pptx")
+        presentation = Presentation(_get_pptx_path("43.pptx"))
     elif 1.7 <= ratio <= 1.8:
-        presentation = Presentation("169.pptx")
+        presentation = Presentation(_get_pptx_path("169.pptx"))
+    else:
+        presentation = Presentation()
 
     left = top = Inches(0)
     for image in images:
@@ -37,14 +46,3 @@ def jpeg2pptx(images, output_path):
             slide.shapes.add_picture(output, left, top, presentation.slide_width, presentation.slide_height)
 
     presentation.save(output_path)
-
-
-def main():
-    import sys
-    images = pdf2jpeg(sys.argv[1])
-    if len(images) > 0:
-        jpeg2pptx(images, sys.argv[2])
-
-
-if __name__ == '__main__':
-    main()
